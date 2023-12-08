@@ -34,7 +34,8 @@ class ClientController extends Controller
 
     public function index(Request $request){
         try {
-            $paramns = $request->query();
+
+        $paramns = $request->query();
 
         $clients = Client::query();
 
@@ -51,25 +52,28 @@ class ClientController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
-    public function update($id,Request $request){
-
+    public function update($id, Request $request)
+    {
         try {
             $client = Client::find($id);
 
-            if(!$client)return $this->response('Cliente não encontrado',Response::HTTP_NOT_FOUND);
+            if (!$client) {
+                return $this->response('Cliente não encontrado', Response::HTTP_NOT_FOUND);
+            }
+
             $request->validate([
                 'name' => 'string|required',
-                'email' => 'email|required|unique:clients'. $id,
+                'email' => 'email|required|unique:clients,email,' . $id,
                 'date_birth' => 'date_format:Y-m-d|required',
-                'cpf' => 'string|required|unique:clients'. $id,
-                'address' => 'string|required'
+                'cpf' => 'string|required|unique:clients,cpf,' . $id,
+                'address' => 'string|required',
             ]);
 
-            $client->update($request->all());
+            $data = $request->only(['name', 'email', 'date_birth', 'cpf', 'address']);
+
+            $client->update($data);
+
             return $this->response('Cliente atualizado com sucesso', Response::HTTP_OK);
-
-
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
