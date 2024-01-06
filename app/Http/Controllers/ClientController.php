@@ -48,6 +48,7 @@ class ClientController extends Controller
                 $clients->where('date_birth', 'ilike', '%' . $params['date_birth'] . '%');
             }
 
+            $clients->orderBy('id', 'asc');
             $result = $clients->get();
 
             return $result;

@@ -6,29 +6,44 @@ use App\Mail\SendAwardEmailToClient;
 use App\Models\Award;
 use App\Models\Client;
 use DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpFoundation\Response;
 
 class AwardController extends Controller
 {
-    public function getAwards(){
-        $date_award =(new DateTime('now'))->format('Y-m-d H:i');
+    public function getAwards()
+    {
 
-        $awards = Award::query()
-        ->where('date_award', '>=', $date_award)
-        ->inRandomOrder()
-        ->first();
+        try {
+            $date_award = (new DateTime('now'))->format('Y-m-d H:i');
 
-        foreach($awards as $award){
-            $clients = Client::query()->take(3)->inRandomOrder()->get();
+            $awards = Award::query()
+                ->where('date_award', '>=', $date_award)
+                ->inRandomOrder()
+                ->first();
 
-            foreach($clients as $client){
-                Mail::to($client->email,$client->name)
-                ->send(new SendAwardEmailToClient($client));
+            foreach ($awards as $award) {
+                $clients = Client::query()->take(3)->inRandomOrder()->get();
+
+                foreach ($clients as $client) {
+                    Mail::to($client->email, $client->name)
+                        ->send(new SendAwardEmailToClient($client));
+                }
             }
+            return $clients;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
+    }
 
-        return $clients;
+    public function index()
+    {
+        try {
+            $awards = Award::all();
 
+            return $awards;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

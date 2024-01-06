@@ -16,5 +16,6 @@ Route::put('clients/{id}', [ClientController::class, 'update']);
 Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 
 Route::get('awards',[AwardController::class,'getAwards']);
+Route::get('awards',[AwardController::class,'index']);
 
 

@@ -30,10 +30,10 @@
             color: #333333;
         }
 
-        .coupon-code {
+        .saida {
             display: inline-block;
             padding: 10px;
-            background-color: #d6d8d8;
+            background-color: #78dcdc;
             color: #ffffff;
             font-size: 18px;
             font-weight: bold;
@@ -42,7 +42,7 @@
         }
 
         .validity {
-            color: #999999;
+            color: #c58c1a;
             margin-top: 10px;
         }
     </style>
@@ -65,8 +65,8 @@
         </p>
 
 
-        <div class="coupon-code">Valor do prêmio: {{ $award->value }}</div>
-        <div class="coupon-code">Local para retirada do prêmio: {{ $award->local }}</div>
+        <div class="saida">Valor do prêmio: {{ $award->value }}</div>
+        <div class="saida">Local para retirada do prêmio: {{ $award->local }}</div>
         <p>Obrigado por confiar em nós!</p>
 
         <p>Atenciosamente</p>
